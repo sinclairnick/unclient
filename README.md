@@ -44,6 +44,8 @@ const result = await getFoo({
 });
 ```
 
+## Table of Contents
+
 ## Why?
 
 Typed API clients are a standard feature of any modern web, mobile or backend app. However, the API contract is often defined _implicitly_ throughout our codebase. Moreover, defining each type manually can be laborious, error prone and hard to track.

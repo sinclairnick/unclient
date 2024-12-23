@@ -12,9 +12,6 @@ importers:
         specifier: ^1.5.3
         version: 1.5.4
     devDependencies:
-      openapi3-ts:
-        specifier: ^4.4.0
-        version: 4.4.0
       tsup:
         specifier: ^8.0.1
         version: 8.2.4(postcss@8.4.45)(typescript@5.7.2)(yaml@2.6.1)
@@ -793,9 +790,6 @@ packages:
   onetime@6.0.0:
     resolution: {integrity: sha512-1FlR+gjXK7X+AsAHso35MnyN5KqGwJRi/31ft6x0M194ht7S+rWAvd7PHss9xSKMzE0asv1pyIHaJYq+BbacAQ==}
     engines: {node: '>=12'}
-
-  openapi3-ts@4.4.0:
-    resolution: {integrity: sha512-9asTNB9IkKEzWMcHmVZE7Ts3kC9G7AFHfs8i7caD8HbI76gEjdkId4z/AkP83xdZsH7PLAnnbl47qZkXuxpArw==}
 
   p-limit@5.0.0:
     resolution: {integrity: sha512-/Eaoq+QyLSiXQ4lyYV23f14mZRQcXnxfHrN0vCai+ak9G0pp9iEQukIIZq5NccEvwRB8PUnZT0KsOoDCINS1qQ==}
@@ -1753,10 +1747,6 @@ snapshots:
     dependencies:
       mimic-fn: 4.0.0
 
-  openapi3-ts@4.4.0:
-    dependencies:
-      yaml: 2.6.1
-
   p-limit@5.0.0:
     dependencies:
       yocto-queue: 1.1.1
@@ -2057,7 +2047,8 @@ snapshots:
       string-width: 5.1.2
       strip-ansi: 7.1.0
 
-  yaml@2.6.1: {}
+  yaml@2.6.1:
+    optional: true
 
   yocto-queue@1.1.1: {}
 

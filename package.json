@@ -10,11 +10,7 @@
   "dependencies": {
     "ufo": "^1.5.3"
   },
-  "peerDependencies": {
-    "openapi3-ts": "^4.4.0"
-  },
   "devDependencies": {
-    "openapi3-ts": "^4.4.0",
     "tsup": "^8.0.1",
     "typescript": "^5.7.2",
     "vitest": "^1.2.2",
@@ -25,6 +21,11 @@
     "inference",
     "type-safe",
     "web"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "license": "MIT",
   "main": "dist/index.js",
