@@ -46,6 +46,12 @@ const result = await getFoo({
 
 ## Table of Contents
 
+- [Why?](#why)
+- [How?](#how)
+- [API Reference](#api-reference)
+  - [`DefineApi`](#defineapit)
+  - [`createUnclient`](#createunclientapidefopts)
+
 ## Why?
 
 Typed API clients are a standard feature of any modern web, mobile or backend app. However, the API contract is often defined _implicitly_ throughout our codebase. Moreover, defining each type manually can be laborious, error prone and hard to track.
@@ -88,34 +94,9 @@ type MyApi = DefineApi<{
 }>;
 ```
 
-### `ParseSpec<T>`
+#### Using OpenAPI specs
 
-> Derive an API definition from an OpenAPI Spec
-
-If we have access to an OpenAPI spec document, we can directly infer the API types from that instead.
-
-To correctly infer the OpenAPI types, we need to save the OpenAPI spec as a TypeScript definition file.
-
-We simply need to copy the OpenAPI spec into a file with the `.d.ts` extension, e.g. `spec.d.ts` and correctly export it as a TS type:
-
-```ts
-declare const spec: {
-  // ... paste/insert the OpenAPI spec contents here
-};
-
-export default spec;
-```
-
-We can then import this spec into our source code and entirely infer the API contract.
-
-```ts
-import { ParseSpec } from "unclient";
-import type Spec from "./spec.d.ts"; // Wherever our spec type definition is
-
-type Api = ParseSpec<Spec>;
-```
-
-We can now interact with our API, with full type safety and no need for code generation.
+We can automatically infer types from an OpenAPI JSON spec using the [`spec-dts`](https://github.com/sinclairnick/spec-dts?tab=readme-ov-file) package. The resulting API type definition is compatible with Unclient.
 
 ### `createUnclient<ApiDef>(opts)`
 
