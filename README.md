@@ -96,7 +96,7 @@ type MyApi = DefineApi<{
 
 #### Using OpenAPI specs
 
-We can automatically infer types from an OpenAPI JSON spec using the [`spec-dts`](https://github.com/sinclairnick/spec-dts?tab=readme-ov-file) package. The resulting API type definition is compatible with Unclient.
+We can automatically infer types from an OpenAPI JSON spec using the [`spec-dts`](https://github.com/sinclairnick/spec-dts) package. The resulting API type definition is compatible with Unclient.
 
 ### `createUnclient<ApiDef>(opts)`
 
