@@ -1,0 +1,40 @@
+{
+  "name": "unclient",
+  "description": "👮‍♀️ Type-safe interactions with any HTTP API",
+  "version": "0.1.0",
+  "author": {
+    "name": "Nick Sinclair",
+    "email": "nicksinclair@xtra.co.nz",
+    "url": "https://github.com/sinclairnick"
+  },
+  "dependencies": {
+    "ufo": "^1.5.3"
+  },
+  "peerDependencies": {
+    "openapi3-ts": "^4.4.0"
+  },
+  "devDependencies": {
+    "openapi3-ts": "^4.4.0",
+    "tsup": "^8.0.1",
+    "vitest": "^1.2.2",
+    "zod": "^3.22.4"
+  },
+  "keywords": [
+    "client",
+    "inference",
+    "type-safe",
+    "web"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "private": false,
+  "scripts": {
+    "build": "tsup",
+    "check": "tsc --noEmit",
+    "publish-pkg": "pnpm run build && pnpm publish --access=public --no-git-checks",
+    "test": "vitest"
+  },
+  "sideEffects": false,
+  "types": "dist/index.d.ts"
+}
