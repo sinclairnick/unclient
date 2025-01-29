@@ -1,4 +1,9 @@
-import { Fetcher, FetcherReturn, FetcherParams } from "../fetcher/types";
+import {
+  Fetcher,
+  FetcherReturn,
+  FetcherParams,
+  AnyFetcherRes,
+} from "../fetcher/types";
 import {
   ApiDef,
   InferFetcherOpts,
@@ -6,19 +11,18 @@ import {
   InferMethods,
   OperationConfig,
 } from "../infer/infer";
-import { Awaitable } from "../types";
 
 export type ApiKey<TApi extends ApiDef> = keyof TApi & `${string} ${string}`;
 
 export type UnclientOptions<
   TOpts extends unknown[] = unknown[],
-  TResponse = unknown
+  TResponse extends AnyFetcherRes = AnyFetcherRes
 > = { fetcher: Fetcher<TOpts, TResponse> };
 
 export type ClientResponse<
   TOp extends OperationConfig,
   TFetcher extends Fetcher
-> = Awaitable<FetcherReturn<TOp["Output"], InferFetcherResponse<TFetcher>>>;
+> = Promise<FetcherReturn<TOp["Output"], InferFetcherResponse<TFetcher>>>;
 
 export type UnclientCreate<
   TApi extends ApiDef = ApiDef,

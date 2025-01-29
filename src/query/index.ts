@@ -1,8 +1,7 @@
-import { ApiKey, ClientResponse, Unclient } from "../client/types";
-import { Fetcher, FetcherParams } from "../fetcher/types";
-import { ApiDef, InferFetcherOpts } from "../infer/infer";
+import { ApiKey, Unclient } from "../client/types";
+import { Fetcher, FetcherParams, FetcherReturn } from "../fetcher/types";
+import { ApiDef, InferFetcherOpts, InferFetcherResponse } from "../infer/infer";
 import {
-  useMutation,
   type MutationFunction,
   type QueryFunction,
 } from "@tanstack/react-query";
@@ -43,7 +42,7 @@ export type Query<TApi extends ApiDef, TFetcher extends Fetcher> = <
 ) => {
   queryKey: [TKey, ...typeof rest];
   queryFn: QueryFunction<
-    ClientResponse<TApi[TKey], TFetcher>,
+    FetcherReturn<TApi[TKey]["Output"], InferFetcherResponse<TFetcher>>,
     [TKey, ...typeof rest],
     never
   >;
@@ -56,13 +55,7 @@ export type Mutation<TApi extends ApiDef, TFetcher extends Fetcher> = <
 ) => {
   mutationKey: [TKey];
   mutationFn: MutationFunction<
-    ClientResponse<TApi[TKey], TFetcher>,
+    FetcherReturn<TApi[TKey]["Output"], InferFetcherResponse<TFetcher>>,
     FetcherParams<TApi[TKey], InferFetcherOpts<TFetcher>>
   >;
 };
-
-useMutation({
-  mutationFn: async (a: 1) => {
-    return [];
-  },
-});

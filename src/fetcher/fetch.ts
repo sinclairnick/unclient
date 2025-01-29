@@ -1,8 +1,11 @@
 import { createUrl } from "../util";
 import { Fetcher } from "./types";
 
-export const fetchFetcher = () => {
-  return (async (config, options?: RequestInit) => {
+export const fetchFetcher = (): Fetcher<
+  [options?: RequestInit],
+  Response & { data: unknown }
+> => {
+  return (async (config, options) => {
     const { body, method } = config;
     const url = createUrl(config);
 

@@ -1,6 +1,8 @@
 import { OperationConfig } from "../infer/infer";
 import { Awaitable, FormatOptionals, Strip } from "../types";
 
+export type AnyFetcherRes = Record<PropertyKey, any>;
+
 export type FetcherReturn<TResult, TFetcherRes> = {
   [TKey in keyof TFetcherRes]: TKey extends "data"
     ? TResult
@@ -18,7 +20,10 @@ export type FetcherConfig = {
   method: string;
 } & FetcherConfigInputs;
 
-export type Fetcher<TOpts extends unknown[] = any[], TResponse = unknown> = (
+export type Fetcher<
+  TOpts extends unknown[] = any[],
+  TResponse extends AnyFetcherRes = AnyFetcherRes
+> = (
   config: Record<PropertyKey, unknown> & FetcherConfig,
   ...opts: TOpts
 ) => Awaitable<TResponse>;
