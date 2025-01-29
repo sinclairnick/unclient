@@ -6,6 +6,9 @@ import {
   InferMethods,
   OperationConfig,
 } from "../infer/infer";
+import { Awaitable } from "../types";
+
+export type ApiKey<TApi extends ApiDef> = keyof TApi & `${string} ${string}`;
 
 export type UnclientOptions<
   TOpts extends unknown[] = unknown[],
@@ -15,12 +18,12 @@ export type UnclientOptions<
 export type ClientResponse<
   TOp extends OperationConfig,
   TFetcher extends Fetcher
-> = Promise<FetcherReturn<TOp["Output"], InferFetcherResponse<TFetcher>>>;
+> = Awaitable<FetcherReturn<TOp["Output"], InferFetcherResponse<TFetcher>>>;
 
 export type UnclientCreate<
   TApi extends ApiDef = ApiDef,
   TFetcher extends Fetcher<any, any> = Fetcher
-> = <TKey extends keyof TApi & `${string} ${string}`>(
+> = <TKey extends ApiKey<TApi>>(
   key: TKey
 ) => (
   ...params: FetcherParams<TApi[TKey], InferFetcherOpts<TFetcher>>
@@ -29,7 +32,7 @@ export type UnclientCreate<
 export type UnclientFetch<
   TApi extends ApiDef = ApiDef,
   TFetcher extends Fetcher = Fetcher
-> = <TKey extends keyof TApi & `${string} ${string}`>(
+> = <TKey extends ApiKey<TApi>>(
   key: TKey,
   ...params: FetcherParams<TApi[TKey], InferFetcherOpts<TFetcher>>
 ) => ClientResponse<TApi[TKey], TFetcher>;
@@ -84,12 +87,9 @@ export type UnclientOperations<
   TApi extends ApiDef = ApiDef,
   TFetcher extends Fetcher = Fetcher
 > = {
-  [Key in keyof TApi &
-    string as DeriveOperationName<Key>]: TApi[Key] extends OperationConfig
-    ? (
-        ...params: FetcherParams<TApi[Key], InferFetcherOpts<TFetcher>>
-      ) => ClientResponse<TApi[Key], TFetcher>
-    : never;
+  [Key in ApiKey<TApi> as DeriveOperationName<Key>]: (
+    ...params: FetcherParams<TApi[Key], InferFetcherOpts<TFetcher>>
+  ) => ClientResponse<TApi[Key], TFetcher>;
 };
 
 export type Unclient<

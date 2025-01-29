@@ -6,6 +6,7 @@ export default defineConfig({
     index: "src/index.ts",
     axios: "src/fetcher/axios.ts",
     fetch: "src/fetcher/fetch.ts",
+    query: "src/query/index.ts",
   },
   clean: true,
   dts: true,
@@ -13,5 +14,5 @@ export default defineConfig({
   outDir: "dist",
   sourcemap: false,
   treeshake: "recommended",
-  esbuildPlugins: [subExports({ entries: ["axios", "fetch"] })],
+  esbuildPlugins: [subExports({ entries: ["axios", "fetch", "query"] })],
 });
