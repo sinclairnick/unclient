@@ -21,7 +21,7 @@ describe("Query", () => {
 
     type Data = Awaited<ReturnType<(typeof result)["queryFn"]>>;
 
-    expectTypeOf<Data>().toMatchTypeOf<{ data: { foo: "bar" } }>();
+    expectTypeOf<Data>().toMatchTypeOf<{ foo: "bar" }>();
   });
 
   test("Mutation correct return type", async () => {
@@ -47,6 +47,6 @@ describe("Query", () => {
     type Data = Awaited<ReturnType<(typeof result)["mutationFn"]>>;
 
     expectTypeOf<Vars>().toMatchTypeOf<{ params: { baz: true } }>();
-    expectTypeOf<Data>().toMatchTypeOf<{ data: { foo: "bar" } }>();
+    expectTypeOf<Data>().toMatchTypeOf<{ foo: "bar" }>();
   });
 });

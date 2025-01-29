@@ -13,8 +13,10 @@ export const init = <TApi extends ApiDef, TFetcher extends Fetcher>(
     query: (...args) => {
       return {
         queryKey: [...args],
-        queryFn: () => {
-          return client.$fetch(...args);
+        queryFn: async () => {
+          const { data } = await client.$fetch(...args);
+
+          return data;
         },
       };
     },
@@ -22,7 +24,8 @@ export const init = <TApi extends ApiDef, TFetcher extends Fetcher>(
       return {
         mutationKey: [key],
         mutationFn: async ([...rest]) => {
-          return client.$fetch(key, ...rest);
+          const { data } = await client.$fetch(key, ...rest);
+          return data;
         },
       };
     },
@@ -42,7 +45,7 @@ export type Query<TApi extends ApiDef, TFetcher extends Fetcher> = <
 ) => {
   queryKey: [TKey, ...typeof rest];
   queryFn: QueryFunction<
-    FetcherReturn<TApi[TKey]["Output"], InferFetcherResponse<TFetcher>>,
+    FetcherReturn<TApi[TKey]["Output"], InferFetcherResponse<TFetcher>>["data"],
     [TKey, ...typeof rest],
     never
   >;
@@ -55,7 +58,7 @@ export type Mutation<TApi extends ApiDef, TFetcher extends Fetcher> = <
 ) => {
   mutationKey: [TKey];
   mutationFn: MutationFunction<
-    FetcherReturn<TApi[TKey]["Output"], InferFetcherResponse<TFetcher>>,
+    FetcherReturn<TApi[TKey]["Output"], InferFetcherResponse<TFetcher>>["data"],
     FetcherParams<TApi[TKey], InferFetcherOpts<TFetcher>>
   >;
 };
