@@ -1,5 +1,5 @@
 import { OperationConfig } from "../infer/infer";
-import { Awaitable, FormatOptionals } from "../types";
+import { Awaitable, FormatOptionals, Strip } from "../types";
 
 export type FetcherReturn<TResult, TFetcherRes> = {
   [TKey in keyof TFetcherRes]: TKey extends "data"
@@ -28,10 +28,12 @@ export type FetcherParams<
   TOpts extends any[]
 > = [
   config: Record<PropertyKey, unknown> &
-    FormatOptionals<{
-      params: TRoute["Params"];
-      body: TRoute["Body"];
-      query: TRoute["Query"];
-    }>,
+    Strip<
+      FormatOptionals<{
+        params: TRoute["Params"];
+        body: TRoute["Body"];
+        query: TRoute["Query"];
+      }>
+    >,
   ...opts: TOpts
 ];

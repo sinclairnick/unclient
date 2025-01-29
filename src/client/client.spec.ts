@@ -208,4 +208,22 @@ describe("Client", () => {
 
     expect(arbitrary).toBe(true);
   });
+
+  test("Omits never params from config", () => {
+    const client = createUnclient<{
+      "GET /foo": {
+        Query: never;
+        Body: never;
+        Params: { foo: string };
+      };
+    }>()({
+      fetcher: () => {},
+    });
+
+    type FnParams = Parameters<typeof client.$get<"/foo">>;
+
+    expectTypeOf<FnParams[1]>().toEqualTypeOf<
+      Record<PropertyKey, unknown> & { params: { foo: string } }
+    >();
+  });
 });

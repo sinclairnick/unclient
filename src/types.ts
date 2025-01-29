@@ -26,9 +26,9 @@ export type UnionToIntersection<U> = (
   ? I
   : never;
 
-export type StripNever<T> = {
-  [Key in keyof T as [T[Key]] extends [never] ? never : Key]: T[Key];
-};
+export type Strip<T, U = never> = {
+  [Key in keyof T as [T[Key]] extends [U] ? never : Key]: T[Key];
+} & {};
 
 export type HttpVerb = "get" | "post" | "put" | "patch" | "delete";
 export type HttpMethod = HttpVerb | Uppercase<HttpVerb>;
