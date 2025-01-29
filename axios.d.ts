@@ -1,1 +1,1 @@
-export type * from "./dist/axios.d.ts";
+export * from "./dist/axios.ts";

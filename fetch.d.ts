@@ -1,1 +1,1 @@
-export type * from "./dist/fetch.d.ts";
+export * from "./dist/fetch.ts";
