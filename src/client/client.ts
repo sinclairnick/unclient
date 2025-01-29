@@ -97,6 +97,7 @@ export function createUnclient(api?: RuntimeApiDef) {
 
       const response = await config.fetcher(
         {
+          ...inputs,
           path: pathPattern,
           method: methodUpper.toLowerCase(),
           ...(await parseInputs(Schema, inputs)),

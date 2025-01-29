@@ -173,15 +173,16 @@ describe("Client", () => {
     expectTypeOf<keyof Client>().toEqualTypeOf<
       "$get" | "$post" | "$fetch" | "$create"
     >();
-    expectTypeOf<Parameters<typeof client.$get<"/hello">>>().toEqualTypeOf<
-      [
-        "/hello",
-        {
-          query: { hi: number };
-          params?: unknown;
-          body?: unknown;
-        }
-      ]
+
+    type FnParams = Parameters<typeof client.$get<"/hello">>;
+
+    expectTypeOf<FnParams[0]>().toEqualTypeOf<"/hello">();
+    expectTypeOf<FnParams[1]>().toEqualTypeOf<
+      Record<PropertyKey, unknown> & {
+        query: { hi: number };
+        params?: unknown;
+        body?: unknown;
+      }
     >();
 
     const result = await client.$get("/hello", {
@@ -191,5 +192,20 @@ describe("Client", () => {
     });
 
     expect(result.data).toEqual({ hi: 2 });
+  });
+
+  test("Allows arbitrary additional fields in config", async () => {
+    let arbitrary;
+    const client = createUnclient<App>()({
+      fetcher: async (config) => {
+        arbitrary = config.arbitrary;
+
+        return {};
+      },
+    });
+
+    await client.$get("/hello", { query: { hi: 1 }, arbitrary: true });
+
+    expect(arbitrary).toBe(true);
   });
 });

@@ -19,15 +19,19 @@ export type FetcherConfig = {
 } & FetcherConfigInputs;
 
 export type Fetcher<TOpts extends unknown[] = any[], TResponse = unknown> = (
-  config: FetcherConfig,
+  config: Record<PropertyKey, unknown> & FetcherConfig,
   ...opts: TOpts
 ) => Awaitable<TResponse>;
 
-export type FetcherParams<TRoute extends OperationConfig, TOpts extends any[]> = [
-  config: FormatOptionals<{
-    params: TRoute["Params"];
-    body: TRoute["Body"];
-    query: TRoute["Query"];
-  }>,
+export type FetcherParams<
+  TRoute extends OperationConfig,
+  TOpts extends any[]
+> = [
+  config: Record<PropertyKey, unknown> &
+    FormatOptionals<{
+      params: TRoute["Params"];
+      body: TRoute["Body"];
+      query: TRoute["Query"];
+    }>,
   ...opts: TOpts
 ];
