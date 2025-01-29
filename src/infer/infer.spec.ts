@@ -1,6 +1,6 @@
 import { describe, expectTypeOf, test } from "vitest";
 import { DefineApi } from "./infer";
-import { createUnclient } from "./client";
+import { createUnclient } from "../client/client";
 
 describe("Infer", () => {
   test("should infer routes", () => {
@@ -25,8 +25,6 @@ describe("Infer", () => {
         return { data: {} };
       },
     });
-
-    client("GET /posts");
 
     expectTypeOf<AppDef["GET /posts"]["Query"]>().toEqualTypeOf<{
       limit?: number;

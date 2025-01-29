@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, test } from "vitest";
 import { createUnclient } from "./client";
-import { TestAppDef } from "./test-util";
+import { TestAppDef } from "../test-util";
 
 describe("Client", () => {
   type App = TestAppDef;
@@ -12,7 +12,7 @@ describe("Client", () => {
       },
     });
 
-    expectTypeOf<Parameters<typeof client>[0]>().toEqualTypeOf<
+    expectTypeOf<Parameters<(typeof client)["$create"]>[0]>().toEqualTypeOf<
       | "GET /hello"
       | "GET /bye"
       | "GET /with/implicit/:paramName"
@@ -27,7 +27,7 @@ describe("Client", () => {
         return { data: {} };
       },
     });
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
     type Config = Parameters<typeof getHello>[0];
 
     expectTypeOf<Config["body"]>().toBeUnknown();
@@ -41,7 +41,7 @@ describe("Client", () => {
         return { data: {} };
       },
     });
-    const postHello = client("POST /hello");
+    const postHello = client.$create("POST /hello");
     type Config = Parameters<typeof postHello>[0];
 
     expectTypeOf<Config["body"]>().toEqualTypeOf<{ notHi: number }>();
@@ -55,7 +55,7 @@ describe("Client", () => {
         return { data: {} };
       },
     });
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
 
     type Expectation = { data: { result: boolean } };
     type Actual = Awaited<ReturnType<typeof getHello>>;
@@ -68,7 +68,7 @@ describe("Client", () => {
         return { data: {}, b: 2 };
       },
     });
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
 
     type Expectation = { data: { result: boolean }; b: number };
     type Actual = Awaited<ReturnType<typeof getHello>>;
@@ -81,7 +81,7 @@ describe("Client", () => {
         return { data: {}, b: 2 };
       },
     });
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
 
     type Expectation = { data: { result: boolean }; b: number };
     type Actual = Awaited<ReturnType<typeof getHello>>;
@@ -95,7 +95,7 @@ describe("Client", () => {
       },
     });
 
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
     expectTypeOf<Parameters<typeof getHello>["length"]>().toEqualTypeOf<1>();
   });
 
@@ -106,30 +106,40 @@ describe("Client", () => {
       },
     });
 
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
     expectTypeOf<Parameters<typeof getHello>[1]>().toEqualTypeOf<{
       a: number;
     }>();
   });
 
-  test("Manages multiple additional params", () => {
+  test("Manages multiple additional params", async () => {
+    let val: Record<any, any> = {};
+
     const client = createUnclient<App>()({
       fetcher: async (
         config,
         options: { a: number },
         options2: { b: number }
       ) => {
+        val = { options, options2 };
+
         return { data: {} };
       },
     });
 
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
     expectTypeOf<Parameters<typeof getHello>[1]>().toEqualTypeOf<{
       a: number;
     }>();
     expectTypeOf<Parameters<typeof getHello>[2]>().toEqualTypeOf<{
       b: number;
     }>();
+
+    await getHello({} as any, { a: 1 }, { b: 2 });
+    expect(val.options).toBeDefined();
+    expect(val.options2).toBeDefined();
+    expect(val.options.a).toBe(1);
+    expect(val.options2.b).toBe(2);
   });
 
   test("Runs fetcher correctly", async () => {
@@ -141,7 +151,7 @@ describe("Client", () => {
       },
     });
 
-    const getHello = client("GET /hello");
+    const getHello = client.$create("GET /hello");
 
     const result = await getHello({
       query: { hi: 2 },
@@ -149,5 +159,37 @@ describe("Client", () => {
 
     expect(result.data).toBe(1);
     expect(result.data).toBe(1);
+  });
+
+  test("Handles HTTP verbs", async () => {
+    const client = createUnclient<App>()({
+      fetcher: async (config) => {
+        return { data: config.query };
+      },
+    });
+
+    type Client = typeof client;
+
+    expectTypeOf<keyof Client>().toEqualTypeOf<
+      "$get" | "$post" | "$fetch" | "$create"
+    >();
+    expectTypeOf<Parameters<typeof client.$get<"/hello">>>().toEqualTypeOf<
+      [
+        "/hello",
+        {
+          query: { hi: number };
+          params?: unknown;
+          body?: unknown;
+        }
+      ]
+    >();
+
+    const result = await client.$get("/hello", {
+      query: {
+        hi: 2,
+      },
+    });
+
+    expect(result.data).toEqual({ hi: 2 });
   });
 });

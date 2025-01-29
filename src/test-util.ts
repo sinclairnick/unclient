@@ -1,4 +1,4 @@
-import { DefineApi } from "./infer";
+import { DefineApi } from "./infer/infer";
 
 export type TestAppDef = DefineApi<{
   "GET /hello": {

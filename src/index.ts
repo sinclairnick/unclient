@@ -1,3 +1,3 @@
-export * from "./client";
+export * from "./client/client";
 export * from "./util";
-export * from "./infer";
+export * from "./infer/infer";

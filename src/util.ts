@@ -1,5 +1,5 @@
-import { FetcherConfig } from "./client";
 import { withQuery, encodeParam, parseURL, stringifyParsedURL } from "ufo";
+import { FetcherConfig } from "./fetcher/types";
 
 export const substitutePathParams = (
   config: Pick<FetcherConfig, "params" | "path">,
@@ -13,8 +13,16 @@ export const substitutePathParams = (
   let path = "";
   for (const part of url.pathname.split("/")) {
     if (part.length === 0) continue;
+
     if (part.startsWith(":")) {
       const key = part.replace(":", "");
+      const value = params[key];
+
+      // Even if its undefined, this should be substituted
+      path += "/" + encodePathParam(value);
+      continue;
+    } else if (part.startsWith("{")) {
+      const key = part.replace(/^{(.*)}$/, "$1");
       const value = params[key];
 
       // Even if its undefined, this should be substituted

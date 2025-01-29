@@ -8,9 +8,12 @@
     "url": "https://github.com/sinclairnick"
   },
   "dependencies": {
+    "schema-shift": "^0.4.0",
     "ufo": "^1.5.3"
   },
   "devDependencies": {
+    "@types/node": "^22.12.0",
+    "axios": "^1.7.9",
     "tsup": "^8.0.1",
     "typescript": "^5.7.2",
     "vitest": "^1.2.2",
@@ -25,11 +28,34 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "dist/axios.mjs",
+    "dist/axios.js",
+    "dist/axios.d.ts",
+    "dist/fetch.mjs",
+    "dist/fetch.js",
+    "dist/fetch.d.ts"
   ],
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./axios": {
+      "types": "./dist/axios.d.ts",
+      "import": "./dist/axios.mjs",
+      "require": "./dist/axios.js"
+    },
+    "./fetch": {
+      "types": "./dist/fetch.d.ts",
+      "import": "./dist/fetch.mjs",
+      "require": "./dist/fetch.js"
+    }
+  },
   "private": false,
   "scripts": {
     "build": "tsup",

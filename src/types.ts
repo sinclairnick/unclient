@@ -25,3 +25,10 @@ export type UnionToIntersection<U> = (
 ) extends (x: infer I) => void
   ? I
   : never;
+
+export type StripNever<T> = {
+  [Key in keyof T as [T[Key]] extends [never] ? never : Key]: T[Key];
+};
+
+export type HttpVerb = "get" | "post" | "put" | "patch" | "delete";
+export type HttpMethod = HttpVerb | Uppercase<HttpVerb>;
