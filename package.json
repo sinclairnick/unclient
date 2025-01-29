@@ -1,7 +1,7 @@
 {
   "name": "unclient",
   "description": "👮‍♀️ Type-safe interactions with any HTTP API",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "author": {
     "name": "Nick Sinclair",
     "email": "nicksinclair@xtra.co.nz",
@@ -77,7 +77,7 @@
   },
   "private": false,
   "scripts": {
-    "build": "tsup",
+    "build": "tsup-node",
     "check": "tsc --noEmit",
     "publish-pkg": "pnpm run build && pnpm publish --access=public --no-git-checks",
     "test": "vitest"
