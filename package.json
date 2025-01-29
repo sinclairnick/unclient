@@ -8,11 +8,11 @@
     "url": "https://github.com/sinclairnick"
   },
   "dependencies": {
-    "esbuild-sub-exports": "^0.6.0",
-    "schema-shift": "^0.4.0",
+		"schema-shift": "^0.4.0",
     "ufo": "^1.5.3"
   },
   "devDependencies": {
+		"esbuild-sub-exports": "^0.6.0",
     "@types/node": "^22.12.0",
     "axios": "^1.7.9",
     "tsup": "^8.0.1",
