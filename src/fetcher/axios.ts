@@ -12,10 +12,16 @@ export const axiosFetcher = (
   const { axios = Axios } = opts ?? {};
 
   return async (config, options) => {
-    const { body, method } = config;
-    const url = createUrl(config);
+    const { body, method, query, ...rest } = config;
+    const url = createUrl(rest); // Passing the rest to axios directly
 
-    const response = await axios({ method, url, data: body, ...options });
+    const response = await axios({
+      method,
+      url,
+      data: body,
+      params: query,
+      ...options,
+    });
 
     return response;
   };
